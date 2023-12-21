@@ -8,6 +8,7 @@ function App() {
   function handleClick() {
     setGameChoice("Coop");
   }
+
   function handleAIClick() {
     setGameChoice("AI");
   }
@@ -28,6 +29,7 @@ function App() {
         </div>
       )}
     </>
+
   );
 }
 
