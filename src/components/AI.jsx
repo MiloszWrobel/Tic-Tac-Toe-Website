@@ -1,9 +1,10 @@
 import Player from "./Player";
-import GameBoard from "./GameBoard";
+import GameBoardAi from "./GameBoardAi";
 import Log from "./Log";
 import { useState } from "react";
 import { WINNING_COMBINATIONS } from "../winning-combinations";
 import GameOver from "./GameOver";
+import PlayerAI from "./PlayerAI";
 
 const initialGameBoard = [
   [null, null, null],
@@ -13,7 +14,7 @@ const initialGameBoard = [
 
 const PLAYERS = {
   X: "Player1",
-  O: "Player2",
+  O: "AI",
 };
 
 function deriveActivePlayer(gameTurns) {
@@ -61,7 +62,7 @@ function AI({ setGameChoice }) {
   function handleSelectSquare(rowIndex, colIndex) {
     setGameTurns((prevTurns) => {
       let currentPlayer = deriveActivePlayer(prevTurns);
-
+      currentPlayer === "X";
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
         ...prevTurns,
@@ -90,7 +91,6 @@ function AI({ setGameChoice }) {
   return (
     <>
       <main>
-        <h1>This IS AI</h1>
         <div id="game-container">
           <ol id="players" className="highlight-player">
             <Player
@@ -99,12 +99,7 @@ function AI({ setGameChoice }) {
               isActive={activePlayer === "X"}
               onChangeName={handlePlayerNameChange}
             ></Player>
-            <Player
-              initialName="Player 2"
-              symbol="O"
-              isActive={activePlayer === "O"}
-              onChangeName={handlePlayerNameChange}
-            ></Player>
+            <PlayerAI symbol="O" isActive={activePlayer === "O"}></PlayerAI>
           </ol>
           {(winner || hasDraw) && (
             <GameOver
@@ -113,7 +108,12 @@ function AI({ setGameChoice }) {
               onMenu={handleMenu}
             />
           )}
-          <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
+          <GameBoardAi
+            onSelectSquare={handleSelectSquare}
+            board={gameBoard}
+            player={deriveActivePlayer(gameTurns)}
+            turns={gameTurns.length}
+          />
         </div>
         <Log turns={gameTurns} />
       </main>
